@@ -3,7 +3,7 @@ import rp from 'request-promise';
 import { getPrestigeLevel } from './utils';
 import { createEndorsementSVG } from './svg';
 
-export default function(platform, region, tag, cb) {
+export default function (platform, region, tag, cb) {
 
   const url = platform === 'pc'
     ? `https://playoverwatch.com/en-us/career/${platform}/${region}/${tag}`
@@ -77,7 +77,7 @@ export default function(platform, region, tag, cb) {
       const topHeroesEls = $(`#quickplay [data-category-id="overwatch.guid.${topHeroCategories.quickplay[k]}"]`)
         .find('.progress-category-item');
       let topHeroes = [];
-      topHeroesEls.each(function(i, el) {
+      topHeroesEls.each(function (i, el) {
         const stat = {};
         stat.hero = $(this).find('.title').text();
         stat.img = $(this).find('img').attr('src');
@@ -93,7 +93,7 @@ export default function(platform, region, tag, cb) {
       const topHeroesEls = $(`#competitive [data-category-id="overwatch.guid.${topHeroCategories.competitive[k]}"]`)
         .find('.progress-category-item');
       let topHeroes = [];
-      topHeroesEls.each(function(i, el) {
+      topHeroesEls.each(function (i, el) {
         const stat = {};
         stat.hero = $(this).find('.title').text();
         stat.img = $(this).find('img').attr('src');
@@ -115,35 +115,70 @@ export default function(platform, region, tag, cb) {
       'Best',
       'Game'
     ];
+    const heroCategories = {
+      '0x02E00000FFFFFFFF': 'all',
+      '0x02E000000000013B': 'ana',
+      '0x02E0000000000015': 'bastion',
+      '0x02E0000000000195': 'brigitte',
+      '0x02E000000000007A': 'dva',
+      '0x02E000000000012F': 'doomfist',
+      '0x02E0000000000029': 'genji',
+      '0x02E0000000000005': 'hanzo',
+      '0x02E0000000000065': 'junkrat',
+      '0x02E0000000000079': 'lucio',
+      '0x02E0000000000042': 'mccree',
+      '0x02E00000000000DD': 'mei',
+      '0x02E0000000000004': 'mercy',
+      '0x02E00000000001A2': 'moira',
+      '0x02E000000000013E': 'orisa',
+      '0x02E0000000000008': 'pharah',
+      '0x02E0000000000002': 'reaper',
+      '0x02E0000000000007': 'reinhardt',
+      '0x02E0000000000040': 'roadhog',
+      '0x02E000000000006E': 'soldier-76',
+      '0x02E000000000012E': 'sombra',
+      '0x02E0000000000016': 'symmetra',
+      '0x02E0000000000006': 'torbjorn',
+      '0x02E0000000000003': 'tracer',
+      '0x02E000000000000A': 'widowmaker',
+      '0x02E0000000000009': 'winston',
+      '0x02E00000000001CA': 'wrecking-ball',
+      '0x02E0000000000068': 'zarya',
+      '0x02E0000000000020': 'zenyatta'
+    }
 
-    // Quickplay Stats.
-    statCategories.forEach(function(item) {
-      const els = $(`#quickplay [data-category-id="0x02E00000FFFFFFFF"] h5:contains("${item}")`).closest('table').find('tbody tr');
-      let statsArr = [];
-      els.each(function(i, el) {
-        let stat = {};
-        stat.title = $(this).find('td').first().text();
-        stat.value = $(this).find('td').next().text();
-        statsArr.push(stat);
+    Object.keys(heroCategories).forEach(function (hero_category) {
+      const hero_slug = heroCategories[hero_category];
+      stats[hero_slug] = {};
+      // Quickplay Stats.
+      statCategories.forEach(function (item) {
+        const els = $(`#quickplay [data-category-id="${hero_category}"] h5:contains("${item}")`).closest('table').find('tbody tr');
+        let statsArr = [];
+        els.each(function (i, el) {
+          let stat = {};
+          stat.title = $(this).find('td').first().text();
+          stat.value = $(this).find('td').next().text();
+          statsArr.push(stat);
+        });
+        item = item.replace(' ', '_').toLowerCase();
+        stats[hero_slug][item] = { quickplay: [] };
+        stats[hero_slug][item]['quickplay'] = statsArr;
       });
-      item = item.replace(' ', '_').toLowerCase();
-      stats[item] = { quickplay: [] };
-      stats[item]['quickplay'] = statsArr;
-    });
 
-    // Competitive Stats.
-    statCategories.forEach(function(item) {
-      const els = $(`#competitive [data-category-id="0x02E00000FFFFFFFF"] h5:contains("${item}")`).closest('table').find('tbody tr');
-      let statsArr = [];
-      els.each(function(i, el) {
-        let stat = {};
-        stat.title = $(this).find('td').first().text();
-        stat.value = $(this).find('td').next().text();
-        statsArr.push(stat);
+      // Competitive Stats.
+      statCategories.forEach(function (item) {
+        const els = $(`#competitive [data-category-id="${hero_category}"] h5:contains("${item}")`).closest('table').find('tbody tr');
+        let statsArr = [];
+        els.each(function (i, el) {
+          let stat = {};
+          stat.title = $(this).find('td').first().text();
+          stat.value = $(this).find('td').next().text();
+          statsArr.push(stat);
+        });
+        item = item.replace(' ', '_').toLowerCase();
+        stats[hero_slug][item]['competitive'] = [];
+        stats[hero_slug][item]['competitive'] = statsArr;
       });
-      item = item.replace(' ', '_').toLowerCase();
-      stats[item]['competitive'] = [];
-      stats[item]['competitive'] = statsArr;
     });
 
     const json = {
