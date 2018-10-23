@@ -1,53 +1,41 @@
 {
-  "name": "overwatch-api-server",
+  "name": "overwatch-api",
   "version": "0.7.1",
-  "description": "An Unoffical Overwatch HTTP API",
-  "main": "server/index.js",
+  "description": "An Unoffical Overwatch API.",
+  "main": "lib/index.js",
+  "typings": "index.d.ts",
   "engines": {
-    "node": ">=6.11.1 <10.3.0"
+    "node": ">=6.11.1"
   },
   "dependencies": {
     "cheerio": "^0.22.0",
-    "node-cache": "^3.2.1",
     "request": "^2.74.0",
     "request-promise": "^4.1.1",
-    "srv-cli": "0.3.6",
     "svg-builder": "^1.0.0"
   },
   "devDependencies": {
     "ava": "^0.22.0",
-    "nyc": "^11.2.1",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "nyc": "^11.2.1"
   },
   "scripts": {
-    "start": "node node_modules/srv-cli/build/srv server/index.js",
-    "start-dev": "nodemon node_modules/srv-cli/build/srv server/index.js",
-    "docs": "node node_modules/srv-cli/build/srv server/index.js --docs server/routes",
-    "debug": "node --nolazy --debug-brk=5858 node_modules/srv-cli/build/srv server/index.js",
-    "lint": "node node_modules/srv-cli/build/srv --lint",
-    "test": "./node_modules/.bin/nyc ava test api/test -v"
+    "compile": "babel -d lib/ src/",
+    "test": "./node_modules/.bin/nyc ava -v",
+    "prepublishOnly": "npm run compile"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alfg/overwatch-api.git"
+    "url": "git+https://github.com/Madrox/overwatch-api.git"
   },
   "keywords": [
     "node",
     "overwatch",
-    "api",
-    "rest",
-    "http",
-    "srv",
-    "express"
+    "api"
   ],
   "author": "Alf",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/alfg/overwatch-api/issues"
-  },
-  "homepage": "https://github.com/alfg/overwatch-api",
   "ava": {
     "files": [
       "test/**/*.js"
