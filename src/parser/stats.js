@@ -116,7 +116,7 @@ export default function (platform, region, tag, cb) {
       'Game'
     ];
     const heroCategories = {
-      '0x02E00000FFFFFFFF': 'all',
+      '0x02E00000FFFFFFFF': 'all-heroes',
       '0x02E000000000013B': 'ana',
       '0x02E0000000000015': 'bastion',
       '0x02E0000000000195': 'brigitte',
