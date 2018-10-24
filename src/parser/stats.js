@@ -151,19 +151,19 @@ export default function (platform, region, tag, cb) {
       const hero_slug = heroCategories[hero_category];
       stats[hero_slug] = {};
       // Quickplay Stats.
-      statCategories.forEach(function (item) {
-        const els = $(`#quickplay [data-category-id="${hero_category}"] h5:contains("${item}")`).closest('table').find('tbody tr');
-        let statsArr = [];
-        els.each(function (i, el) {
-          let stat = {};
-          stat.title = $(this).find('td').first().text();
-          stat.value = $(this).find('td').next().text();
-          statsArr.push(stat);
-        });
-        item = item.replace(' ', '_').toLowerCase();
-        stats[hero_slug][item] = { quickplay: [] };
-        stats[hero_slug][item]['quickplay'] = statsArr;
-      });
+      // statCategories.forEach(function (item) {
+      //   const els = $(`#quickplay [data-category-id="${hero_category}"] h5:contains("${item}")`).closest('table').find('tbody tr');
+      //   let statsArr = [];
+      //   els.each(function (i, el) {
+      //     let stat = {};
+      //     stat.title = $(this).find('td').first().text();
+      //     stat.value = $(this).find('td').next().text();
+      //     statsArr.push(stat);
+      //   });
+      //   item = item.replace(' ', '_').toLowerCase();
+      //   stats[hero_slug][item] = { quickplay: [] };
+      //   stats[hero_slug][item]['quickplay'] = statsArr;
+      // });
 
       // Competitive Stats.
       statCategories.forEach(function (item) {
